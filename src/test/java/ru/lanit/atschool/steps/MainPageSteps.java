@@ -1,30 +1,39 @@
 package ru.lanit.atschool.steps;
 
 import io.cucumber.java.ru.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.lanit.atschool.helpers.ConfigReader;
 import ru.lanit.atschool.pages.MainPage;
 import ru.lanit.atschool.webdriver.WebDriverManager;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class MainPageSteps {
-    WebDriver driver = WebDriverManager.getDriver();
+
+
     MainPage mainPage = new MainPage();
+    protected final Wait<WebDriver> wait = new WebDriverWait(WebDriverManager.getDriver(), 100, 1000);
 
-    @Пусть("открыт браузер и введен адрес \"(.*)\"$")
-    public void openedBrowserAndEnteredUrl(String url) {
-        mainPage.openPage(url);
-
-//        driver = WebDriverManager.getDriver();
-//        driver.get(url);
+    @Пусть("открыт браузер и введен адрес сайта$")
+    public void openedBrowserAndEnteredUrl() throws IOException {
+        mainPage.openPage(ConfigReader.getStringSystemProperty("url"));
     }
 
-    @Пусть("пользователь вводит \"(.*)\"$")
-    public void userEnters(String arg0) {
-        driver = WebDriverManager.getDriver();
-        WebElement webElement = driver.findElement(By.name("q"));
+    @Пусть("^пользователь вводит поисковый запрос в \"(.*)\"$")
+    public void userEnters(String string) throws InterruptedException {
+       WebElement webElement = mainPage.get(string);
+       wait.until(ExpectedConditions.visibilityOf(webElement));
+        webElement.click();
+        try {
+            webElement.sendKeys(ConfigReader.getStringSystemProperty("searchWord"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @И("заведен новый пользователь")
@@ -40,5 +49,10 @@ public class MainPageSteps {
     @И("вот")
     public void vot() {
 
+    }
+
+    @И("нажата кнопка {string}")
+    public void pressButton(String button) {
+        mainPage.get(button).click();
     }
 }

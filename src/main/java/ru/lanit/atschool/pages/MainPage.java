@@ -1,11 +1,17 @@
 package ru.lanit.atschool.pages;
 
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.lanit.atschool.Intefaces.NameOfElement;
+import ru.lanit.atschool.webdriver.WebDriverManager;
 
 
 import java.util.List;
+
 public class MainPage extends BasePage {
+    private final Logger logger = Logger.getLogger(MainPage.class);
 
     /**
      * Метод открывает браузер на заданной странице
@@ -17,38 +23,18 @@ public class MainPage extends BasePage {
     }
 
     /**
-     * Кнопка "Search".
+     * Поле "Search". "//*[@value='Мне повезёт!']"
      */
-
-    @FindBy(xpath = "//input[@value='Search']")
-    public WebElement btnSearch;
-
+    @NameOfElement("Поле Поиска")
+    @FindBy(name = "q")
+    public WebElement searchField;
     /**
-     * Кнопка "Посмотреть все запросы".
+     * Поле "Search".
      */
+    @NameOfElement("Кнопка Мне Повезёт!")
+    @FindBy(xpath = "//*[@value='Мне повезёт!']")
+    public WebElement iFeelLucky;
 
-    @FindBy(xpath = "//button[text()='Посмотреть все запросы']")
-    public WebElement btnShowAllRequests;
 
-    /**
-     * Выпадающий список "Количество".
-     */
-
-    @FindBy(css = "#page_number")
-    public WebElement dropdownListCount;
-
-    /**
-     * Опции выпадающего списка "Количество".
-     */
-
-    @FindBy(css = ".custom-select option")
-    public List<WebElement> dropdownListCountCollection;
-
-    /**
-     * Поле ввода "Введите ключевое слово".
-     */
-
-    @FindBy(xpath = "//input[@placeholder='Введите ключевое слово']")
-    public WebElement inputField;
 }
 
