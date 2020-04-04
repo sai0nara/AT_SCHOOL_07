@@ -30,12 +30,12 @@ public class WebDriverManager {
                 ChromeOptions option = new ChromeOptions();
                 option.addArguments("--window-size=1920,1080");
                 driver = new ChromeDriver(option);
+                driver.manage().timeouts().implicitlyWait(Long.parseLong(ConfigReader.getStringSystemProperty("implicit.wait")), TimeUnit.SECONDS);
             } catch(UnreachableBrowserException e) {
-               logger.error("Невозможно инциализировать драйвер!", e);
+                logger.error("Невозможно инциализировать драйвер!", e);
             } catch (IOException e) {
                 logger.error("Не найден путь до драйвера", e);
-            }
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            }//
         }
         return driver;
     }
